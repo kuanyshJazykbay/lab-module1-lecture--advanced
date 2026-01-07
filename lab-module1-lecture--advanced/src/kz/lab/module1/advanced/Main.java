@@ -12,8 +12,8 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        //taskImmutable();
-        //taskRecord();
+        taskImmutable();
+        taskRecord();
         taskLambda();
     }
 
@@ -24,13 +24,13 @@ public class Main {
 
 
         // не должно работать - после исправления закомментировать
-        Student student = new Student();
+        //Student student = new Student();
 
         // не должно работать - после исправления закомментировать
-        student.setName("Ivan");
+        //student.setName("Ivan");
 
         // должно работать - после исправления раскомментировать
-        //Student student1 = new Student(1, "Ivan", "70022244505");
+        Student student1 = new Student(1, "Ivan", "70022244505");
 
         // должно выводить в читаемом виде
         //System.out.println(student1.toString());
@@ -67,7 +67,7 @@ public class Main {
         //  поля должны быть immutable
 
         Set<String> items = new HashSet<>(Set.of("a", "b", "c"));
-        Order order = new Order(100, -30, LocalDateTime.now().plusDays(10), items); // можно ввести некорректные данные
+        Order order = new Order(100, 30, LocalDateTime.now().minusDays(10), items); // можно ввести некорректные данные
         System.out.println(order);
         order.items().add("d"); // можно изменить поле рекорда
         System.out.println(order);
@@ -81,7 +81,7 @@ public class Main {
                 new Customer("Bob", "bob@gmail.com"),
                 new Customer("Alice", "alice@gmail.com")
         );
-
+        sendEmails(title, content, customers, email -> System.out.println(email));
         // todo: реализовать отправку имейлов вставив имена в заголовок
         //sendEmails(...);
 
@@ -95,5 +95,9 @@ public class Main {
 //        customers.stream()
 //                .map(...)
 //                .forEach(...);
+        customers.stream().map(customer -> new Email(
+                customer.email(),
+                title+customer.name(), content
+        )).forEach(emailSender::send);
     }
 }
